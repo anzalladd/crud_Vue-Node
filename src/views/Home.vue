@@ -6,10 +6,13 @@
         <tr>
           <th>Judul</th>
           <th>Nama Band</th>
+          <th>Action</th>
         </tr>
         <tr v-for="post in posts">
           <td>{{post.title}}</td>
           <td>{{post.band}}</td>
+          <td><router-link v-bind:to="{ name: 'edit', params: { id: post._id } }">Edit</router-link> |
+<a href="#" @click="deletePost(post._id)">Delete</a></td>
         </tr>
       </table>
     </div>
@@ -37,6 +40,10 @@ export default {
     async getPosts(){
       const response = await PostService.fetchPost()
       this.posts = response.data.posts
+    },
+     async deletePost (id) {
+      await PostService.deletePost(id)
+      this.$router.push({ name: 'home' })
     }
   }
 }
